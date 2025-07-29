@@ -3,28 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.didim.project1.user.UserMapper">
+<mapper namespace="com.didim.project1.user.mapper.UserMapper">
 
-    <select id="findAll" resultType="com.didim.project1.user.User">
-        SELECT * FROM user
+    <select id="findByEmail" resultType="com.didim.project1.user.entity.User">
+        SELECT id, email, password, name
+        FROM user
+        WHERE email = #{email}
     </select>
 
-    <select id="findById" resultType="com.didim.project1.user.User">
-        SELECT * FROM user WHERE id = #{id}
+    <select id="save" resultType="com.didim.project1.user.entity.User">
+        INSERT INTO user (email, password, name, is_deleted)
+        VALUES (#{email}, #{password}, #{name}, #{isDeleted})
     </select>
-
-    <insert id="insert" parameterType="com.didim.project1.user.User">
-        INSERT INTO user(id,username, password)
-        VALUES(#{id}, #{username}, #{password})
-    </insert>
-
-    <update id="update" parameterType="com.didim.project1.user.User">
-        UPDATE user SET username=#{username}, email=#{email}
-        WHERE id=#{id}
-    </update>
-
-    <delete id="delete" parameterType="long">
-        DELETE FROM user WHERE id = #{id}
-    </delete>
 
 </mapper>

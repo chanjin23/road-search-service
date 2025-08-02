@@ -56,4 +56,9 @@ public class UserService {
         log.debug("회원 가입 - 이메일: {}", newUser.getEmail());
         return newUser.toSignUpResponseDto();
     }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
+    }
 }

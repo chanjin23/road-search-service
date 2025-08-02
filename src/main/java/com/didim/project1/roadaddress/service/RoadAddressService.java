@@ -1,7 +1,7 @@
 package com.didim.project1.roadaddress.service;
 
 import com.didim.project1.roadaddress.dto.RoadAddressApiDto;
-import com.didim.project1.roadaddress.dto.RoadAddressResponseDto;
+import com.didim.project1.roadaddress.dto.RoadAddressDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class RoadAddressService {
     private final RestTemplate restTemplate;
 
     // todo 리팩토링
-    public List<RoadAddressResponseDto> fetchRoadAddress(String roadAddress) throws URISyntaxException {
-        List<RoadAddressResponseDto> roadAddressResponseDtoList = new ArrayList<>();
+    public List<RoadAddressDto> fetchRoadAddress(String roadAddress) throws URISyntaxException {
+        List<RoadAddressDto> roadAddressDtoList = new ArrayList<>();
 
         URI uri = roadAddressComponent.createUri(roadAddress);
 
@@ -38,7 +38,7 @@ public class RoadAddressService {
                 = roadAddressComponent.removeDuplicateAddressInfo(addressInfoList);
 
         for (RoadAddressApiDto.AddressInfoDto addressInfoDto : addressInfo) {
-            RoadAddressResponseDto dto = RoadAddressResponseDto.builder()
+            RoadAddressDto dto = RoadAddressDto.builder()
                     .yPos(addressInfoDto.getYpos())
                     .xPos(addressInfoDto.getXpos())
                     .roadAddress(addressInfoDto.getJUSO())
@@ -46,8 +46,8 @@ public class RoadAddressService {
                     .buildName(addressInfoDto.getBLD_NM())
                     .build();
 
-            roadAddressResponseDtoList.add(dto);
+            roadAddressDtoList.add(dto);
         }
-        return roadAddressResponseDtoList;
+        return roadAddressDtoList;
     }
 }

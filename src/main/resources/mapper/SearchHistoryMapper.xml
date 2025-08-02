@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.didim.project1.searchhistory.mapper.SearchHistoryMapper">
+
+    <insert id="save" parameterType="com.didim.project1.searchhistory.entity.SearchHistory">
+        INSERT INTO search_history ( user_id, road_address, zipcode, build_name, x_pos, y_pos )
+        VALUES ( #{userId}, #{roadAddress}, #{zipcode}, #{buildName}, #{xPos}, #{yPos} )
+    </insert>
+
+    <select id="findAllByPage" resultType="com.didim.project1.roadaddress.dto.RoadAddressDto">
+        SELECT road_address, zipcode, build_name, x_pos, y_pos
+        FROM search_history
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+        LIMIT 10 OFFSET #{page}
+    </select>
+
+</mapper>

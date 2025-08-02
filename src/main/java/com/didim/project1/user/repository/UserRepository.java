@@ -19,4 +19,8 @@ public class UserRepository {
     public void save(User user) {
         userMapper.save(user);
     }
+
+    public Optional<User> findById(Long userId) {
+        return userMapper.findById(userId);
+    }
 }

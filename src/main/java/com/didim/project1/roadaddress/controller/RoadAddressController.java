@@ -1,6 +1,6 @@
 package com.didim.project1.roadaddress.controller;
 
-import com.didim.project1.roadaddress.dto.RoadAddressResponseDto;
+import com.didim.project1.roadaddress.dto.RoadAddressDto;
 import com.didim.project1.roadaddress.service.RoadAddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +23,10 @@ public class RoadAddressController {
     public ResponseEntity<?> searchRoadAddress(
             @RequestParam("roadAddress") String roadAddress
     ) throws URISyntaxException {
-        List<RoadAddressResponseDto> roadAddressResponseDto
+        List<RoadAddressDto> roadAddressDto
                 = roadAddressService.fetchRoadAddress(roadAddress);
 
-        log.info("조회된 결과 수 : {}", roadAddressResponseDto.size());
-        return ResponseEntity.status(HttpStatus.OK).body(roadAddressResponseDto);
+        log.info("조회된 결과 수 : {}", roadAddressDto.size());
+        return ResponseEntity.status(HttpStatus.OK).body(roadAddressDto);
     }
 }

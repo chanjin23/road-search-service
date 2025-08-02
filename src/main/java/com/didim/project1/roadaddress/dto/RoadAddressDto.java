@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class RoadAddressResponseDto {
-    private double xPos;
-    private double yPos;
+public class RoadAddressDto {
     private String roadAddress;
     private String zipcode;
     private String buildName;
+    private double xPos;
+    private double yPos;
 
 }

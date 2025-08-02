@@ -11,4 +11,6 @@ public interface UserMapper {
     Optional<User> findByEmail(String email);
 
     void save(User user);
+
+    Optional<User> findById(Long userId);
 }

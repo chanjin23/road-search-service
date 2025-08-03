@@ -1,9 +1,19 @@
 import * as Api from "../api.js";
 
 const searchButton = document.getElementById("searchBtn");
+const resultList = document.getElementById("resultList");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageInfo = document.getElementById("pageInfo");
+
+let fullData = [];      // 전체 검색 결과 저장
+let currentPage = 1;    // 현재 페이지
+const pageSize = 10;     // 한 페이지에 몇 개 보여줄지
 
 function addAllEvents() {
     searchButton.addEventListener("click", handleSubmit);
+    prevBtn.addEventListener("click", goPrevPage);
+    nextBtn.addEventListener("click", goNextPage);
 }
 
 addAllEvents();
@@ -19,62 +29,82 @@ async function handleSubmit(e) {
     console.log("검색 요청:", keyword);
 
     try {
-        // ⭐ 실제 사용 시 해당 URL을 도로명주소 검색 API 주소로 변경하세요
         const url = `/api/search`;
-        const params = {roadAddress: keyword};
+        const params = { roadAddress: keyword };
 
         const data = await Api.get(url, params);
-
-        if (!Array.isArray(data) || data.length === 0) {
-            renderResult([]);
-        } else {
-            renderResult(data);
-        }
+        fullData = Array.isArray(data) ? data : [];
+        currentPage = 1;
+        renderPage();
     } catch (err) {
         console.error("API 호출 중 오류:", err);
         alert("검색 중 오류가 발생했습니다.");
     }
 }
 
-document.getElementById("mypageBtn").addEventListener("click", () => {
-    // TODO: 마이페이지 이동 처리
-    alert("마이페이지로 이동합니다.");
-});
-
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    // TODO: 로그아웃 처리
-    alert("로그아웃되었습니다.");
-});
-
-function renderResult(list) {
-    const resultList = document.getElementById("resultList");
+function renderPage() {
     resultList.innerHTML = "";
 
-    if (list.length === 0) {
+    if (fullData.length === 0) {
         resultList.innerHTML = "<li>검색 결과가 없습니다.</li>";
+        pageInfo.textContent = "0 / 0";
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
         return;
     }
 
-    list.forEach((item) => {
-        const li = document.createElement("li");
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, fullData.length);
+    const pageItems = fullData.slice(startIndex, endIndex);
 
-        // HTML 구조 구성 (도로명주소 / 건물명 / 우편번호)
+    pageItems.forEach((item) => {
+        const li = document.createElement("li");
         li.innerHTML = `
             <div>${item.roadAddress}</div>
-            <div>${item.buildName ? `[건물명] ${item.buildName}` : ""} ${item.zipcode ? `(우편번호: ${item.zipcode})` : ""}
-            </div>`;
+            <div>
+                ${item.buildName ? `[건물명] ${item.buildName}` : ""} 
+                ${item.zipcode ? `(우편번호: ${item.zipcode})` : ""}
+            </div>
+        `;
 
         li.style.cursor = "pointer";
         li.addEventListener("click", () => {
-            // URL 인코딩 필수
             const url = new URL('/detail.html', window.location.origin);
-            // url.searchParams.set('address', item.roadAddress);
             url.searchParams.set('xpos', item.xpos);
             url.searchParams.set('ypos', item.ypos);
-
             window.location.href = url.toString();
         });
 
         resultList.appendChild(li);
     });
+
+    const totalPages = Math.ceil(fullData.length / pageSize);
+    pageInfo.textContent = `${currentPage} / ${totalPages}`;
+
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
 }
+
+function goPrevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        renderPage();
+    }
+}
+
+function goNextPage() {
+    const totalPages = Math.ceil(fullData.length / pageSize);
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderPage();
+    }
+}
+
+// 마이페이지 / 로그아웃
+document.getElementById("mypageBtn").addEventListener("click", () => {
+    alert("마이페이지로 이동합니다.");
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    alert("로그아웃되었습니다.");
+});

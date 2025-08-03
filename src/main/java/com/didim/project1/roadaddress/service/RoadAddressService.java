@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,17 +21,20 @@ public class RoadAddressService {
     private final RoadAddressComponent roadAddressComponent;
     private final RestTemplate restTemplate;
 
-    // todo 리팩토링
-    public List<RoadAddressDto> fetchRoadAddress(String roadAddress) throws URISyntaxException {
-        List<RoadAddressDto> roadAddressDtoList = new ArrayList<>();
+    public static final int PAGE_SIZE = 10;                         // 한 페이지에 보여줄 개수
 
+    public RoadAddressApiDto fetchRoadAddress(String roadAddress) throws URISyntaxException {
         URI uri = roadAddressComponent.createUri(roadAddress);
 
         log.info("요청 API url : {}", uri.toString());
 
         // todo 예외처리
-        RoadAddressApiDto roadAddressApiDto = restTemplate.getForObject(uri, RoadAddressApiDto.class);
+        return restTemplate.getForObject(uri, RoadAddressApiDto.class);
 
+    }
+
+    public List<RoadAddressDto> removeDuplicateAddressInfo(RoadAddressApiDto roadAddressApiDto) {
+        List<RoadAddressDto> roadAddressDtoList = new ArrayList<>();
         List<RoadAddressApiDto.AddressInfoDto> addressInfoList = roadAddressApiDto.getLIST();
 
         //중복처리로직
@@ -49,5 +53,16 @@ public class RoadAddressService {
             roadAddressDtoList.add(dto);
         }
         return roadAddressDtoList;
+    }
+
+    public List<RoadAddressDto> roadAddressByPage(List<RoadAddressDto> roadAddressDto, int page) {
+        int fromIndex = (page - 1) * PAGE_SIZE;     // 시작 인덱스
+        int toIndex = Math.min(fromIndex + PAGE_SIZE, roadAddressDto.size()); // 끝 인덱스
+
+        if (fromIndex >= roadAddressDto.size() || fromIndex < 0) {
+            return Collections.emptyList(); // 요청한 페이지가 존재하지 않으면 빈 리스트 반환
+        }
+
+        return roadAddressDto.subList(fromIndex, toIndex);
     }
 }

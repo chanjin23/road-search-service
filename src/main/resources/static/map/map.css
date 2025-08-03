@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;     /* 화면 높이의 80%만큼 지도 표시 */
+}
+
+#closeBtn.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 9999;
+}

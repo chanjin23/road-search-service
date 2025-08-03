@@ -69,7 +69,7 @@ function renderPage() {
 
         li.style.cursor = "pointer";
         li.addEventListener("click", () => {
-            const url = new URL('/detail.html', window.location.origin);
+            const url = new URL('/map/map.html', window.location.origin);
             url.searchParams.set('xpos', item.xpos);
             url.searchParams.set('ypos', item.ypos);
             window.location.href = url.toString();

@@ -1,7 +1,1 @@
-async function validationToken() {
-
-}
-
-export const blockIfLogin = async () => {
-    const isValid = await validToken();
-};
+import * as Api from "../api.js";

@@ -7,7 +7,6 @@ const passwordInput = document.querySelector("#password");
 
 function addAllEvents() {
     submitButton.addEventListener("click", handleSubmit);
-    console.log("testest");
 }
 
 addAllEvents();
@@ -29,22 +28,5 @@ async function handleSubmit(e) {
     }
 }
 
-// function sendLoginRequest(data) {
-//     return new Promise((resolve, reject) => {
-//         $.ajax({
-//             url: "/api/login",
-//             method: "POST",
-//             contentType: "application/json",
-//             data: JSON.stringify(data),
-//             xhrFields: { withCredentials: true },
-//             success: function(response) {
-//                 resolve(response);
-//             },
-//             error: function(jqXHR) {
-//                 reject(new Error(`Error: ${jqXHR.status}`));
-//             }
-//         });
-//     });
-// }
 
 

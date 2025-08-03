@@ -8,11 +8,9 @@ import com.didim.project1.user.service.UserAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -30,11 +28,11 @@ public class UserAuthController {
     // 로그인 처리
     @PostMapping("/login")
     public ResponseEntity<UserTokenResponseDto> login(@RequestBody UserSignInRequestDto userSignInRequestDto,
-                                                      HttpServletResponse response){
+                                                      HttpServletResponse response) {
 
-        JwtToken jwtToken = userAuthService.login(userSignInRequestDto);
-        CookieUtil.setCookie(response, "refreshToken", jwtToken.getRefreshToken(),refreshTokenExpired);
+        JwtToken jwtToken = userAuthService.login(userSignInRequestDto, response);
 
-        return ResponseEntity.ok(new UserTokenResponseDto(jwtToken.getAccessToken()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new UserTokenResponseDto(jwtToken.getAccessToken()));
     }
 }

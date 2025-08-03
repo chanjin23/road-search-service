@@ -4,6 +4,7 @@ import com.didim.project1.common.jwt.JwtToken;
 import com.didim.project1.common.jwt.JwtTokenProvider;
 import com.didim.project1.user.dto.UserSignInRequestDto;
 import com.didim.project1.user.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,10 +23,11 @@ public class UserAuthService {
 
     // 로그인
     @Transactional
-    public JwtToken login(UserSignInRequestDto signInRequestDto) {
+    public JwtToken login(UserSignInRequestDto signInRequestDto,
+                          HttpServletResponse response) {
         User user = validateUser(signInRequestDto);
         Authentication authentication = authenticateUser(user.getEmail(), signInRequestDto.getPassword());
-        return jwtTokenProvider.generateToken(authentication);
+        return jwtTokenProvider.generateToken(authentication, response);
     }
 
     // email, password를 사용해서 유저 확인

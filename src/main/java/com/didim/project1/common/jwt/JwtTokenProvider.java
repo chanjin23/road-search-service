@@ -71,6 +71,8 @@ public class JwtTokenProvider {
                 .signWith(secretKey, SignatureAlgorithm.HS256) // 서명
                 .compact();
 
+        CookieUtil.setCookie(response, "accessToken", accessToken, refreshTokenExpired);
+        CookieUtil.setCookie(response, "refreshToken", refreshToken, refreshTokenExpired);
 
 
         // JWT Token 객체 반환

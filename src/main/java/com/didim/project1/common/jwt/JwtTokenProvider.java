@@ -1,10 +1,12 @@
 package com.didim.project1.common.jwt;
 
+import com.didim.project1.common.util.CookieUtil;
 import com.didim.project1.user.entity.User;
 import com.didim.project1.user.repository.UserRepository;
 import com.didim.project1.user.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +42,8 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken generateToken(Authentication authentication) {
+    public JwtToken generateToken(Authentication authentication,
+                                  HttpServletResponse response) {
 
         long now = (new Date()).getTime();
         Date accessTokenExpiration = new Date(now + accessTokenExpired * 1000);
@@ -67,6 +70,8 @@ public class JwtTokenProvider {
                 .setExpiration(refreshTokenExpiration) // 만료 시간
                 .signWith(secretKey, SignatureAlgorithm.HS256) // 서명
                 .compact();
+
+
 
         // JWT Token 객체 반환
         return JwtToken.builder()

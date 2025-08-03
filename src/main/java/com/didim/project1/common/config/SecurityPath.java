@@ -6,7 +6,11 @@ public class SecurityPath {
     public static final String[] PUBLIC_ENDPOINTS = {
             "/test/all", //테스트
             "/api/login",
-            "/api/signup"
+            "/api/signup",
+            "/login/**",
+            "/useful-function.js",
+            "/api.js",
+            "/home/**"
     };
 
 }

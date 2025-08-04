@@ -10,7 +10,7 @@ public class SecurityPath {
             "/login/**",
             "/useful-function.js",
             "/api.js",
-            "/home/**"
+            "/","/login","/map"
     };
 
 }

@@ -1,4 +1,5 @@
 import * as Api from "../api.js";
+import { checkLogin } from "../useful-function.js";
 
 const searchButton = document.getElementById("searchBtn");
 const resultList = document.getElementById("resultList");
@@ -16,6 +17,7 @@ function addAllEvents() {
     nextBtn.addEventListener("click", goNextPage);
 }
 
+checkLogin();
 addAllEvents();
 
 async function handleSubmit(e) {
@@ -69,7 +71,7 @@ function renderPage() {
 
         li.style.cursor = "pointer";
         li.addEventListener("click", () => {
-            const url = new URL('/map/map.html', window.location.origin);
+            const url = new URL('/map', window.location.origin);
             url.searchParams.set('xpos', item.xpos);
             url.searchParams.set('ypos', item.ypos);
             window.location.href = url.toString();

@@ -1,12 +1,14 @@
 package com.didim.project1.user.controller;
 
 import com.didim.project1.common.jwt.JwtToken;
+import com.didim.project1.common.jwt.JwtTokenProvider;
 import com.didim.project1.common.util.CookieUtil;
 import com.didim.project1.user.dto.UserSignInRequestDto;
 import com.didim.project1.user.dto.UserTokenResponseDto;
 import com.didim.project1.user.service.UserAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,10 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class UserAuthController {
-
-    @Value("${jwt.refresh-expired}")
-    private Long refreshTokenExpired;
-
-
     private final UserAuthService userAuthService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 로그인 처리
     @PostMapping("/login")
@@ -34,5 +33,20 @@ public class UserAuthController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new UserTokenResponseDto(jwtToken.getAccessToken()));
+    }
+
+    @GetMapping("/protected")
+    public ResponseEntity<Void> getProtectedResource(@CookieValue(
+            value = "accessToken", required = false, defaultValue = "") String accessToken) {
+        log.info("토큰검증");
+        if (accessToken == null || accessToken.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (jwtTokenProvider.validateToken(accessToken)) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

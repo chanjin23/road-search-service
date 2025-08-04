@@ -1,4 +1,10 @@
+// import { checkLogin } from "../useful-function.js";
+//
+// await checkLogin();
+// todo checkLogin() 안됨 나중에수정
+
 const NCP_CLIENT_ID = CONFIG.NCP_CLIENT_ID;
+
 
 // URL 에서 좌표 파라미터 추출
 const params = new URLSearchParams(window.location.search);

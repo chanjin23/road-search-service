@@ -13,8 +13,8 @@ mybatis:
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-#  access-expired: 300 # 5분
-  access-expired: 7200 # 2시간
+  access-expired: 300 # 5분
+#  access-expired: 7200 # 2시간
   refresh-expired: 7200 # 2시간
 
 road-address:

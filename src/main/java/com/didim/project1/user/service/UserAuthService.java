@@ -1,9 +1,12 @@
 package com.didim.project1.user.service;
 
+import com.didim.project1.common.jwt.CustomUserDetails;
 import com.didim.project1.common.jwt.JwtToken;
 import com.didim.project1.common.jwt.JwtTokenProvider;
+import com.didim.project1.common.util.CookieUtil;
 import com.didim.project1.user.dto.UserSignInRequestDto;
 import com.didim.project1.user.entity.User;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.didim.project1.common.jwt.TokenConstants.ACCESS_TOKEN_TYPE_VALUE;
+import static com.didim.project1.common.jwt.TokenConstants.REFRESH_TOKEN_TYPE_VALUE;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +53,16 @@ public class UserAuthService {
                 new UsernamePasswordAuthenticationToken(email, password);
 
         return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    }
+
+    public JwtToken refresh(String refreshToken, HttpServletResponse response) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
+
+        return jwtTokenProvider.generateToken(authentication, response);
+    }
+
+    public void logout(HttpServletResponse response) {
+        CookieUtil.deleteCookie(response,REFRESH_TOKEN_TYPE_VALUE);
+        CookieUtil.deleteCookie(response,ACCESS_TOKEN_TYPE_VALUE);
     }
 }

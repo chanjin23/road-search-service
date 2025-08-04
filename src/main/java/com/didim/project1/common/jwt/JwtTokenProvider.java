@@ -12,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+
+import static com.didim.project1.common.jwt.TokenConstants.ACCESS_TOKEN_TYPE_VALUE;
+import static com.didim.project1.common.jwt.TokenConstants.REFRESH_TOKEN_TYPE_VALUE;
 
 @Component
 @Slf4j
@@ -71,13 +71,12 @@ public class JwtTokenProvider {
                 .signWith(secretKey, SignatureAlgorithm.HS256) // 서명
                 .compact();
 
-        CookieUtil.setCookie(response, "accessToken", accessToken, refreshTokenExpired);
-        CookieUtil.setCookie(response, "refreshToken", refreshToken, refreshTokenExpired);
+        CookieUtil.setCookie(response, ACCESS_TOKEN_TYPE_VALUE, accessToken, accessTokenExpired);
+        CookieUtil.setCookie(response, REFRESH_TOKEN_TYPE_VALUE, refreshToken, refreshTokenExpired);
 
 
         // JWT Token 객체 반환
         return JwtToken.builder()
-                .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -129,5 +128,4 @@ public class JwtTokenProvider {
         // Authentication 객체 반환
         return new UsernamePasswordAuthenticationToken(userDetails, null, Collections.emptyList());
     }
-
 }

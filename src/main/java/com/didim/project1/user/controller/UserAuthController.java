@@ -49,4 +49,29 @@ public class UserAuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    // 토큰 재발급
+    @GetMapping("/token/refresh")
+    public ResponseEntity<UserTokenResponseDto> refreshAccessToken(
+            @CookieValue(name = "refreshToken", required = false) String refreshToken,
+            HttpServletResponse response) {
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            throw new IllegalArgumentException("리프레시토큰 없음");
+        }
+
+        if (jwtTokenProvider.validateToken(refreshToken)) {
+            JwtToken jwtToken = userAuthService.refresh(refreshToken, response);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new UserTokenResponseDto(jwtToken.getAccessToken()));
+        } else {
+            throw new IllegalArgumentException("리프레시토큰 유효성검증 실패");
+        }
+    }
+
+    // 로그아웃 API
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        userAuthService.logout(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

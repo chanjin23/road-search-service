@@ -8,7 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class JwtToken {
-    private String grantType;
     private String accessToken;
     private String refreshToken;
 }

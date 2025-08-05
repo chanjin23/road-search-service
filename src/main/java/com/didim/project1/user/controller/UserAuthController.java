@@ -55,6 +55,7 @@ public class UserAuthController {
     public ResponseEntity<UserTokenResponseDto> refreshAccessToken(
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response) {
+        log.info("토큰재발급 시작!");
         if (refreshToken == null || refreshToken.isEmpty()) {
             throw new IllegalArgumentException("리프레시토큰 없음");
         }

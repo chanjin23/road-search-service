@@ -39,8 +39,7 @@ async function handleSubmit(e) {
         currentPage = 1;
         renderPage();
     } catch (err) {
-        console.error("API 호출 중 오류:", err);
-        alert("검색 중 오류가 발생했습니다.");
+        checkLogin();
     }
 }
 
@@ -107,6 +106,7 @@ document.getElementById("mypageBtn").addEventListener("click", () => {
     alert("마이페이지로 이동합니다.");
 });
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
-    alert("로그아웃되었습니다.");
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await Api.post("/api/logout");
+    window.location.href = "/login";
 });

@@ -7,7 +7,11 @@ public class SecurityPath {
             "/test/all", //테스트
             "/api/login",
             "/api/signup",
+            "/api/protected",
+            "/api/token/refresh",
             "/login/**",
+            "/home/**",
+            "/map/**",
             "/useful-function.js",
             "/api.js",
             "/","/login","/map"

@@ -62,7 +62,7 @@ public class WebSecurityConfig {
         configuration.addAllowedOrigin("http://localhost:8080"); // 허용할 클라이언트 도메인
         configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
         configuration.addAllowedHeader("*"); // 모든 헤더 허용
-        configuration.setAllowCredentials(true); // 인증 정보 허용 (쿠키 등)
+        configuration.setAllowCredentials(true); // 인증 정보 허용
 
         org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 적용

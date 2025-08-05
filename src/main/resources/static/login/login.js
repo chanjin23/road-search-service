@@ -26,11 +26,11 @@ async function handleSubmit(e) {
 
         console.log("응답 데이터:", result);
         alert("로그인 성공");
-        window.location.href = "/home/home.html";
+        window.location.href = "/";
     } catch (error) {
         console.error(error);
         alert("로그인 실패");
-        window.location.href = "/login/login.html";
+        window.location.href = "/login";
     }
 }
 

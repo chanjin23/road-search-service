@@ -1,4 +1,7 @@
 import * as Api from "../api.js";
+import{
+    blockIfLogin
+} from "../useful-function.js";
 
 const registerForm = document.getElementById("register-form");
 const nameInput = document.getElementById("name");
@@ -7,12 +10,14 @@ const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const errorMsg = document.getElementById("error-msg");
 
-// 실행
-addAllEvents();
+
 
 function addAllEvents() {
     registerForm.addEventListener("submit", handleSubmit);
 }
+
+blockIfLogin();
+addAllEvents();
 
 async function handleSubmit(e) {
     e.preventDefault();

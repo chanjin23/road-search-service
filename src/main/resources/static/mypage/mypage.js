@@ -20,7 +20,7 @@ function addAllEvents() {
     updateForm.addEventListener("submit", submitHandleSubmit);
 }
 
-// checkLogin();
+checkLogin();
 addAllEvents();
 
 async function searchHistoryHandleSubmit(e) {

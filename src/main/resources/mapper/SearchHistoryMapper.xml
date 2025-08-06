@@ -11,7 +11,7 @@
     </insert>
 
     <select id="findAllByPage" resultType="com.didim.project1.roadaddress.dto.RoadAddressDto">
-        SELECT road_address, zipcode, build_name, x_pos, y_pos
+        SELECT road_address, zipcode, build_name, x_pos, y_pos, created_at
         FROM search_history
         WHERE user_id = #{userId}
         ORDER BY created_at DESC

@@ -1,5 +1,5 @@
 import * as Api from "../api.js";
-import { checkLogin } from "../useful-function.js";
+import {checkLogin} from "../useful-function.js";
 
 const searchButton = document.getElementById("searchBtn");
 const resultList = document.getElementById("resultList");
@@ -23,9 +23,6 @@ addAllEvents();
 async function handleSubmit(e) {
     e.preventDefault();
 
-    document.getElementById('updateInfoSection').classList.add('d-none');
-    document.getElementById('searchHistory').classList.remove('d-none');
-
     const keyword = document.getElementById("searchInput").value.trim();
     if (!keyword) {
         alert("검색어를 입력해주세요.");
@@ -35,7 +32,7 @@ async function handleSubmit(e) {
 
     try {
         const url = `/api/search`;
-        const params = { roadAddress: keyword };
+        const params = {roadAddress: keyword};
 
         const data = await Api.get(url, params);
         fullData = Array.isArray(data) ? data : [];
@@ -72,7 +69,17 @@ function renderPage() {
         `;
 
         li.style.cursor = "pointer";
-        li.addEventListener("click", () => {
+        li.addEventListener("click", async () => {
+            const searchHistoryUrl = '/api/searchHistory';
+
+            await Api.post(searchHistoryUrl, {
+                roadAddress: item.roadAddress,
+                zipcode: item.zipcode,
+                buildName: item.buildName,
+                xPos: item.xPos,
+                yPos: item.yPos
+            });
+
             const url = new URL('/map', window.location.origin);
             url.searchParams.set('xpos', item.xpos);
             url.searchParams.set('ypos', item.ypos);

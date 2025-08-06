@@ -12,6 +12,9 @@ let email = document.getElementById("email");
 let fullData = [];
 
 function addAllEvents() {
+    document.addEventListener("DOMContentLoaded", () => {
+        loadUserInfo();
+    })
     historyBtn.addEventListener("click", searchHistoryHandleSubmit);
     infoBtn.addEventListener("click", infoBtnHandleSubmit);
     updateForm.addEventListener("submit", submitHandleSubmit);
@@ -33,8 +36,11 @@ async function searchHistoryHandleSubmit(e) {
 }
 
 async function infoBtnHandleSubmit(e) {
-    e.preventDefault();
+    resultList.classList.add('d-none');
+    updateInfoSection.classList.remove('d-none');
+}
 
+async function loadUserInfo() {
     const userUrl = '/api/user';
 
     resultList.classList.add('d-none');
@@ -57,6 +63,11 @@ async function submitHandleSubmit(e) {
 
     if (newPassword !== confirmPassword) {
         errorMsg.textContent = "비밀번호가 일치하지 않습니다.";
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        errorMsg.textContent = "비밀번호는 8자 이상 20자 이하여야 하며, 알파벳, 숫자, 특수문자를 포함해야 합니다.";
         return;
     }
 
@@ -87,9 +98,17 @@ function renderPage() {
                 ${item.buildName ? `[건물명] ${item.buildName}` : ""} 
                 ${item.zipcode ? `(우편번호: ${item.zipcode})` : ""}
             </div>
+            <div class="text-muted small">
+                ${item.createdAt ? item.createdAt : ""}
+            </div>
         `;
         li.classList.add("list-group-item");
 
         resultList.appendChild(li);
     });
+}
+
+function validatePassword(password) {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,20}$/;
+    return passwordRegex.test(password);
 }

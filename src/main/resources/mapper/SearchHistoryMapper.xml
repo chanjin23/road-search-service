@@ -18,4 +18,10 @@
         LIMIT 10 OFFSET #{page}
     </select>
 
+    <select id="count" resultType="Integer">
+        SELECT count(1)
+        FROM search_history
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

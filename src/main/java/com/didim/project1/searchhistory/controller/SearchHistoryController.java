@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,5 +36,13 @@ public class SearchHistoryController {
         log.info("검색기록 조회");
         List<RoadAddressDto> searchHistoryList = searchHistoryService.findSearchHistory(page, customUserDetails.getId());
         return ResponseEntity.status(HttpStatus.OK).body(searchHistoryList);
+    }
+
+    @GetMapping("/searchHistory/count")
+    public ResponseEntity<Integer> countSearchHistory(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        log.info("검색기록 조회");
+        Integer count = searchHistoryService.countSearchHistory(customUserDetails.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(count);
     }
 }

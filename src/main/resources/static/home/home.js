@@ -76,8 +76,8 @@ function renderPage() {
                 roadAddress: item.roadAddress,
                 zipcode: item.zipcode,
                 buildName: item.buildName,
-                xPos: item.xPos,
-                yPos: item.yPos
+                xpos: item.xpos,
+                ypos: item.ypos
             });
 
             const url = new URL('/map', window.location.origin);

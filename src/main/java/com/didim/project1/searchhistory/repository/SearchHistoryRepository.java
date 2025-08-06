@@ -21,4 +21,8 @@ public class SearchHistoryRepository {
     public List<RoadAddressDto> findAllByPage(int page, Long userId) {
         return searchHistoryMapper.findAllByPage(page, userId);
     }
+
+    public Integer count(Long userId) {
+        return searchHistoryMapper.count(userId);
+    }
 }

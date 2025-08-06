@@ -34,4 +34,8 @@ public class SearchHistoryService {
         int offset = (page - 1) * 10;
         return searchHistoryRepository.findAllByPage(offset, userId);
     }
+
+    public Integer countSearchHistory(Long userId) {
+        return searchHistoryRepository.count(userId);
+    }
 }

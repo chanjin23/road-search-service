@@ -13,4 +13,5 @@ public interface SearchHistoryMapper {
 
     List<RoadAddressDto> findAllByPage(int page, Long userId);
 
+    Integer count(Long userId);
 }

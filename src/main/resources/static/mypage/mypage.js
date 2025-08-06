@@ -7,9 +7,14 @@ const historyBtn = document.getElementById("historyBtn");
 const infoBtn = document.getElementById("infoBtn");
 const resultList = document.getElementById("resultList");
 const updateInfoSection = document.getElementById("updateInfoSection");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageInfo = document.getElementById("pageInfo");
 let name = document.getElementById("name");
 let email = document.getElementById("email");
 let fullData = [];
+let currentPage = 1;
+const pageSize = 10;
 
 function addAllEvents() {
     document.addEventListener("DOMContentLoaded", () => {
@@ -18,6 +23,8 @@ function addAllEvents() {
     historyBtn.addEventListener("click", searchHistoryHandleSubmit);
     infoBtn.addEventListener("click", infoBtnHandleSubmit);
     updateForm.addEventListener("submit", submitHandleSubmit);
+    prevBtn.addEventListener("click",prevBtnHandleSubmit);
+    nextBtn.addEventListener("click",nextBtnHandleSubmit);
 }
 
 checkLogin();
@@ -26,17 +33,30 @@ addAllEvents();
 async function searchHistoryHandleSubmit(e) {
     e.preventDefault();
     const url = '/api/searchHistory';
+    const parameter = {
+        page: currentPage
+    }
 
     updateInfoSection.classList.add('d-none');
     resultList.classList.remove('d-none');
+    prevBtn.classList.remove('d-none');
+    pageInfo.classList.remove('d-none');
+    nextBtn.classList.remove('d-none');
 
-    const data = await Api.get(url);
+    const data = await Api.get(url, parameter);
     fullData = Array.isArray(data) ? data : [];
     renderPage();
+
+    const totalCount = await Api.get('/api/searchHistory/count');
+    updatePageInfoByCount(totalCount);
 }
 
-async function infoBtnHandleSubmit(e) {
+async function infoBtnHandleSubmit() {
     resultList.classList.add('d-none');
+    prevBtn.classList.add('d-none');
+    pageInfo.classList.add('d-none');
+    nextBtn.classList.add('d-none');
+
     updateInfoSection.classList.remove('d-none');
 }
 
@@ -44,6 +64,9 @@ async function loadUserInfo() {
     const userUrl = '/api/user';
 
     resultList.classList.add('d-none');
+    prevBtn.classList.add('d-none');
+    pageInfo.classList.add('d-none');
+    nextBtn.classList.add('d-none');
     updateInfoSection.classList.remove('d-none');
 
     const data = await Api.get(userUrl);
@@ -106,6 +129,26 @@ function renderPage() {
 
         resultList.appendChild(li);
     });
+}
+
+function updatePageInfoByCount(totalCount) {
+    const totalPages = Math.ceil(totalCount / pageSize);
+    pageInfo.textContent = `${currentPage} / ${totalPages}`;
+
+    prevBtn.disabled = (currentPage === 1);
+    nextBtn.disabled = (currentPage === totalPages);
+}
+
+function prevBtnHandleSubmit() {
+    if (currentPage > 1) {
+        currentPage--;
+        searchHistoryHandleSubmit(new Event("click"));
+    }
+}
+
+function nextBtnHandleSubmit() {
+    currentPage++;
+    searchHistoryHandleSubmit(new Event("click"));
 }
 
 function validatePassword(password) {

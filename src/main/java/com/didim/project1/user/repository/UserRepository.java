@@ -1,5 +1,6 @@
 package com.didim.project1.user.repository;
 
+import com.didim.project1.user.dto.UserUpdateRequestDto;
 import com.didim.project1.user.mapper.UserMapper;
 import com.didim.project1.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,9 @@ public class UserRepository {
 
     public Optional<User> findById(Long userId) {
         return userMapper.findById(userId);
+    }
+
+    public void update(long userId, String newPassword) {
+        userMapper.update(userId, newPassword);
     }
 }

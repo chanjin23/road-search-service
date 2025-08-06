@@ -15,7 +15,8 @@ public class SecurityPath {
             "/register/**",
             "/useful-function.js",
             "/api.js",
-            "/","/login","/map","/register"
+            "/mypage/**",
+            "/","/login","/map","/register","/mypage"
     };
 
 }

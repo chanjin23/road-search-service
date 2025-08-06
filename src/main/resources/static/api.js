@@ -47,20 +47,18 @@ function post(endpoint, data) {
     });
 }
 
-function patch(endpoint, params = "", data) {
-    const apiUrl = params ? `${endpoint}/${params}` : endpoint;
-    const bodyData = JSON.stringify(data);
-    console.log(`%cPATCH 요청: ${apiUrl}`, "color: #059c4b;");
-    console.log(`%cPATCH 요청 데이터: ${bodyData}`, "color: #059c4b;");
+function put(endpoint, data) {
+    console.log(`%cPUT 요청: ${endpoint}`, "color: #059c4b;");
+    const bodyData =JSON.stringify(data);
 
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: apiUrl,
-            method: "PATCH",
+            url: endpoint,
+            method: "PUT",
             data: bodyData,
             contentType: "application/json",
             xhrFields: { withCredentials: true },
-            success: (data) => resolve(data),
+            success: (response) => resolve(response),
             error: (xhr) => {
                 const { reason } = JSON.parse(xhr.responseText);
                 reject(new Error(reason));
@@ -68,6 +66,7 @@ function patch(endpoint, params = "", data) {
         });
     });
 }
+
 
 function del(endpoint, params = "", data = {}) {
     const apiUrl = params ? `${endpoint}/${params}` : endpoint;
@@ -140,4 +139,4 @@ function patchFormData(endpoint, formData) {
     });
 }
 
-export { get, post, patch, del as delete, postFormData, patchFormData };
+export { get, post, put, del as delete, postFormData, patchFormData };

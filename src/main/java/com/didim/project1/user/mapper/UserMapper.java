@@ -1,5 +1,6 @@
 package com.didim.project1.user.mapper;
 
+import com.didim.project1.user.dto.UserUpdateRequestDto;
 import com.didim.project1.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,6 @@ public interface UserMapper {
     void save(User user);
 
     Optional<User> findById(Long userId);
+
+    void update(long userId,String newPassword);
 }

@@ -23,6 +23,9 @@ addAllEvents();
 async function handleSubmit(e) {
     e.preventDefault();
 
+    document.getElementById('updateInfoSection').classList.add('d-none');
+    document.getElementById('searchHistory').classList.remove('d-none');
+
     const keyword = document.getElementById("searchInput").value.trim();
     if (!keyword) {
         alert("검색어를 입력해주세요.");
@@ -101,9 +104,8 @@ function goNextPage() {
     }
 }
 
-// 마이페이지 / 로그아웃
 document.getElementById("mypageBtn").addEventListener("click", () => {
-    alert("마이페이지로 이동합니다.");
+    window.location.href = "/mypage";
 });
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {

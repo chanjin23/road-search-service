@@ -24,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.secret-key}")
     private String secretKey;
     private final JwtTokenProvider jwtTokenProvider;
-    private static final String BEARER = "Bearer";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //쿠키에서 JWT 추출
         String accessToken = resolveAccessToken(request);
 
-        // access token이 있고, BEARER로 시작한다면
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
             // 유효한 토큰: 유저 정보 가져옴
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);

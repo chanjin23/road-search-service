@@ -19,7 +19,7 @@ export const checkLogin = async () => {
 
         // 로그인 후 다시 지금 페이지로 자동으로 돌아가도록 하기 위한 준비작업임.
         alert("회원만 이용가능한페이지입니다.");
-        window.location.replace(`/login?previouspage=${pathname + search}`);
+        window.location.replace(`/login`);
         return false;
 
     }

@@ -12,9 +12,10 @@ public class SecurityPath {
             "/login/**",
             "/home/**",
             "/map/**",
+            "/register/**",
             "/useful-function.js",
             "/api.js",
-            "/","/login","/map"
+            "/","/login","/map","/register"
     };
 
 }
